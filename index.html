@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Puppet</title>
     <link rel="stylesheet" href="../css/style.css">
     <script type="text/javascript" src="../node_modules/paper/dist/paper-full.js"></script>
 
-<!-- from p5 ml5 -->
+    <!-- from p5 ml5 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
@@ -17,21 +18,82 @@
 
     <!-- Add some eyes -->
     <img class="hidden" id="eyes" src="eyes-1-01.png" width="880" height="497"></img>
-<style>.hidden{visibility:hidden;position: absolute;z-index: -1;}</style>
+    <style>
+        .hidden {
+            visibility: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+    </style>
 </head>
+
 <body>
     <!-- Running p5 and paper -->
-    
-    <h1>👋🏾 Fluid Hand Puppet</h1>
-    <div id="show-value"><h2>The puppet is NOT Ready.</h2></div>
+    <header>
+        <!-- <div class="backColor"> -->
+        <button id="back" class="about">←</button>
+
+        <div class="information">
+            <h1>👋 Musical Puppet 🎹</h1>
+            <div id="show-value">
+                <h2>The puppet is NOT Ready.</h2>
+            </div>
+        </div>
+
+        <!-- <button class="about">?</button> -->
+
+        <!-- Trigger/Open The Modal -->
+        <button id="myBtn" class="about">?</button>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Some text in the Modal..</p>
+            </div>
+
+        </div>
+        <script>
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on the button, open the modal
+            btn.onclick = function () {
+                modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
+        <!-- </div> -->
+
+    </header>
+
     <!-- <p>Testing prototype: Paper.js with Ml5 | Project by Themis</p> -->
     <canvas id="canvas" resize></canvas>
     <!-- <h1>I'm here 2.</h1>  -->
-   
 
 
-<!-- TEST PaperScript Interoperability -->
-<!-- <input type="range" id="x" from="0" to="150" default="75"></input>
+
+    <!-- TEST PaperScript Interoperability -->
+    <!-- <input type="range" id="x" from="0" to="150" default="75"></input>
 <input type="range" id="y" from="0" to="150" default="75" ></input>
 <button type="number" id="lineToBtn">LineTo</button>
 <br>
@@ -39,4 +101,5 @@
 
 
 </body>
+
 </html>

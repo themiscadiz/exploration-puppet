@@ -24,7 +24,15 @@ var blinkMotion = false;
 
 var eyesMovementMap = 0;
 
+var keyPiano1;
+var keyPiano2;
+var keyPiano3;
 
+var auraMove = 0;
+var keyPianoAura1;
+var sWidth;
+var opac;
+var clonedPath;
 
 // var color1 = 'blue';
 
@@ -32,11 +40,14 @@ var eyesMovementMap = 0;
 // createPaths(color1);
 
 var hue = new Color({ hue: Math.random() * 360, saturation: .50, brightness: 1 })
+var hue2 = new Color({ hue: Math.random() * 360, saturation: .50, brightness: 1 })
+var hue3 = new Color({ hue: Math.random() * 360, saturation: .20, brightness: 1 })
 
 createPaths(hue);
 
 function createPaths(hue) {
-  
+
+
     var radiusDelta = values.maxRadius - values.minRadius;
 
     var pointsDelta = values.maxPoints - values.minPoints;
@@ -62,7 +73,7 @@ function createPaths(hue) {
 
 
 function createBlob(center, maxRadius, points) {
-    
+
     var path = new Path();
     path.closed = true;
 
@@ -81,11 +92,66 @@ function createBlob(center, maxRadius, points) {
     if (smooth)
         // path.smooth({ type: 'continuous', from: -1, to: 1 }); 
         path.smooth({ type: 'catmull-rom', factor: 0.0 });
-        // path.smooth({ type: 'continuous' });
+    // path.smooth({ type: 'continuous' });
 
+    // Set the shadow color of the circle to RGB black:
+    path.shadowColor = new Color(0, 0, 0);
+    // Set the shadow blur radius to 12:
+    path.shadowBlur = 12;
+    // Offset the shadow by { x: 5, y: 5 }
+    path.shadowOffset = new Point(5, 5);
 
     return path;
 }
+
+
+// var rect = new Path.Rectangle({
+//     point: [globals.wSize/ 2, globals.hSize / 2],
+//     size: [globals.wSize/ 2, globals.hSize / 2]
+//     // strokeColor: 'white',
+//     // selected: true
+// });
+// rect.sendToBack();
+// rect.fillColor = '#dfedf2';
+
+var rectangle = new Rectangle(
+    new Point(0, 0),
+    new Size(view.size.width, view.size.height)
+    
+);
+
+var shape = new Shape.Rectangle(rectangle);
+shape.sendToBack();
+
+
+
+
+
+keyPiano1 = new Path.Circle({
+    center: [20, 20],
+    radius: [globals.sizeNote, globals.sizeNote],
+    // strokeColor: 'black'
+});
+
+keyPiano2 = new Path.Circle({
+    center: [20, 20],
+    radius: [globals.sizeNote, globals.sizeNote],
+    // strokeColor: 'black'
+});
+
+keyPiano3 = new Path.Circle({
+    center: [20, 20],
+    radius: [globals.sizeNote, globals.sizeNote],
+    // strokeColor: 'black'
+});
+
+// keyPianoAura1 = new Path.Circle({
+//     center: [globals.rX, globals.rY],
+//     radius: [60, 60],
+//     strokeColor: hue2,
+//     strokeWidth: 20
+// });
+
 
 // face
 var face = new Path.Circle({
@@ -93,18 +159,15 @@ var face = new Path.Circle({
     center: new Point(100, 100),
     radius: 70,
     fillColor: hue,
-    strokeColor: hue
+    strokeColor: hue,
+    // Set the shadow color of the circle to RGB black:
+    shadowColor: new Color('#4a4a4a'),
+    // Set the shadow blur radius to 12:
+    shadowBlur: 12, 
+    // Offset the shadow by { x: 5, y: 5 }
+    shadowOffset: new Point(1, 1)
 });
 
-// if (blinkMotion) {
-//     console.log("eyes open");
-// }
-// else if(blinkMotion===false) {
-//     console.log("eyes close");
-// }
-
-// tes circle
-// var eyeLOpen = new Path.Circle(new Point(0,0), 20);
 
 
 // ****eyes circle****
@@ -115,9 +178,6 @@ var eyeLOpen = new Path.Circle({
 });
 
 eyeLOpen.removeSegment(1);
-// eyesLOpen.fillColor = 'blue';
-
-// eyeLOpen.removeSegment(3);
 
 var eyeROpen = new Path.Circle({
     center: [60, 0],
@@ -129,30 +189,6 @@ eyeROpen.removeSegment(1);
 
 var eyesOpen = new Group();
 eyesOpen.children = [eyeLOpen, eyeROpen];
-
-// The path is the first child of the group:
-// eyesOpen.firstChild.fillColor = 'black';
-// eyesOpen.lastChild.fillColor = 'black';
-
-
-// eyesOpen.position = [globals.n, globals.o];
-
-
-// // ****eyes glow****
-// var eyeLGlow = new Path.Circle({
-//     center: [0, 0],
-//     radius: 5,
-//     fillColor: 'white'
-// });
-
-// var eyeRGlow = new Path.Circle({
-//     center: [60, 0],
-//     radius: 5,
-//     fillColor: 'white'
-// });
-
-// var eyesGlow = new Group();
-// eyesGlow.children = [eyeLGlow, eyeRGlow];
 
 
 // eyes arc
@@ -208,84 +244,141 @@ var raster = new Raster('eyes');
 // Scale the raster by 50%
 raster.scale(0.1);
 
-// // let's draw some fingers
-// var thumbo = new Path.Circle({
-
-//     center: [ globals.a, globals.b],
-//     radius: 20,
-//     fillColor: 'blue',
-//     strokeColor: hue
-// });
-
-// var indexo = new Path.Circle({
-
-//     center: [ globals.c, globals.d],
-//     radius: 20,
-//     fillColor: 'red',
-//     strokeColor: hue
-// });
-
-// var middo = new Path.Circle({
-
-//     center: [ globals.e, globals.f],
-//     radius: 20,
-//     fillColor: 'pink',
-//     strokeColor: hue
-// });
-
-// var ringo = new Path.Circle({
-
-//     center: [ globals.g, globals.h],
-//     radius: 20,
-//     fillColor: 'yellow',
-//     strokeColor: hue
-// });
-
-// var pinko = new Path.Circle({
-
-//     center: [ globals.i, globals.j],
-//     radius: 20,
-//     fillColor: 'green',
-//     strokeColor: hue
-// });
 
 function onFrame(event) {
-    var keyPiano = new Path.Rectangle({
-        point: [20, 20],
-        size: [160, 160],
-        strokeColor: 'black'
-    });
 
-  
+    keyPiano1.position = [globals.rX, globals.rY];
+    keyPiano2.position = [globals.sX, globals.sY];
+    keyPiano3.position = [globals.tX, globals.tY];
+
+    // shape.fillColor = hue3;
+    shape.fillColor = '#f0ffff';
+
+    if (globals.playNoteSpace2) {
+
+        keyPiano2.fillColor = hue2;
+        keyPiano2.fillColor.alpha = 0.5;
+
+        shape.fillColor.alpha = 0.5;
+
+        keyPiano2.shadowColor = new Color('#3b3b3b');
+        // Set the shadow blur radius to 12:
+        keyPiano2.shadowBlur = 0;
+        // Offset the shadow by { x: 5, y: 5 }
+        keyPiano2.shadowOffset = new Point(0, 0);
+
+    
+    }
+    else {
+        keyPiano2.fillColor = hue2;
+        // keyPiano2.fillColor = new Color(1, 0, 1);
+        keyPiano2.fillColor.alpha = 1;
+        shape.fillColor.alpha = 1;
+
+        keyPiano2.shadowColor = new Color('#3b3b3b');
+        // Set the shadow blur radius to 12:
+        keyPiano2.shadowBlur = 12;
+        // Offset the shadow by { x: 5, y: 5 }
+        keyPiano2.shadowOffset = new Point(5, 5);
+    }
+
+    if (globals.playNoteSpace3) {
+
+        keyPiano3.fillColor = hue2;
+        keyPiano3.fillColor.alpha = 0.5;
+        shape.fillColor.alpha = 0.5;
+
+        keyPiano3.shadowColor = new Color('#3b3b3b');
+        // Set the shadow blur radius to 12:
+        keyPiano3.shadowBlur = 0;
+        // Offset the shadow by { x: 5, y: 5 }
+        keyPiano3.shadowOffset = new Point(0, 0);
+    }
+    else {
+        keyPiano3.fillColor = hue2;
+        // keyPiano3.fillColor = new Color(1, 0, 1);
+        keyPiano3.fillColor.alpha = 1;
+        shape.fillColor.alpha = 1;
+
+        keyPiano3.shadowColor = new Color('#3b3b3b');
+        // Set the shadow blur radius to 12:
+        keyPiano3.shadowBlur = 12;
+        // Offset the shadow by { x: 5, y: 5 }
+        keyPiano3.shadowOffset = new Point(5, 5);
+    }
+
+
+    if (globals.playNoteSpace) {
+
+        keyPiano1.fillColor = hue2;
+        keyPiano1.fillColor.alpha = 0.5;
+        shape.fillColor.alpha = 0.5;
+        // shape.fillColor.saturation = .20;
+
+        // auraMove = auraMove + 10;
+
+        // keyPianoAura1.position = [globals.rX, globals.rY];
+
+        // var clones = 10;
+        // var angle = 360 / clones;
+
+        // for (var i = 0; i < clones; i++) {
+        //     clonedPath = keyPianoAura1.clone();
+        //     clonedPath.rotate(angle * i, keyPianoAura1.bounds.topLeft);
+        // };
+
+        // opac = 4;
+
+        keyPiano1.shadowColor = new Color('#3b3b3b');
+        // Set the shadow blur radius to 12:
+        keyPiano1.shadowBlur = 0;
+        // Offset the shadow by { x: 5, y: 5 }
+        keyPiano1.shadowOffset = new Point(0, 0);
+    }
+
+    else {
+        // keyPiano1.fillColor = new Color(1, 0, 1);
+        keyPiano1.fillColor = hue2;
+        // keyPiano1.fillColor = new Color(1, 0, 1);
+        keyPiano1.fillColor.alpha = 1;
+        shape.fillColor.alpha = 1;
+        // shape.fillColor.saturation = .90;
+
+        keyPiano1.shadowColor = new Color('#3b3b3b');
+        // Set the shadow blur radius to 12:
+        keyPiano1.shadowBlur = 12;
+        // Offset the shadow by { x: 5, y: 5 }
+        keyPiano1.shadowOffset = new Point(5, 5);
+
+
+        // auraMove = 0;
+        // opac = 1;
+    }
+    // console.log("paper note ", globals.playNoteSpace);
+    // keyPianoAura1.opacity = opac;
+
+    if (globals.playNote) { }
+    else { }
+    // console.log(globals.playNote);
 
     blinkMotion = globals.p;
     mouthMotion = globals.p;
 
-    
     if (blinkMotion) {
         // console.log("eyes close");
         eyes.strokeColor = 'black';
         eyes.strokeColor.alpha = 1;
 
-
         eyesOpen.fillColor = hue;
-        // eyesGlow.fillColor = hue;
 
         raster.opacity = 0;
     }
     else if (blinkMotion === false) {
-        // raster.alpha(1);
         raster.opacity = 1;
 
         // console.log("eyes open");
         eyes.strokeColor = hue;
         eyes.strokeColor.alpha = 0;
-
-        // eyesOpen.fillColor = 'blue';
-        // // eyes.strokeColor = 'black';
-        // eyesGlow.fillColor = hue;
-        // // eyes.fillColor = 'blue';
-        // eyes.strokeWidth = 5;
     }
 
     // mouthMotion
@@ -293,8 +386,8 @@ function onFrame(event) {
     if (mouthMotion) {
         // console.log("mouth open");
         mouth.strokeWidth = 20;
-
     }
+
     else if (mouthMotion === false) {
         // console.log("mouth close");
         mouth.strokeWidth = 7;
@@ -302,91 +395,41 @@ function onFrame(event) {
 
     }
 
-    
-
-    // var itemTest2 = project.getItem({
-    //     class: Path,
-    //     fillColor: 'blue'
-    // });
-
-    // face.position = [globals.e, globals.f];
     face.position = [globals.k, globals.l];
 
-    keyPiano.position=[400,400];
-    // keyPiano.fillColor = new Color(1, 0, 1, [0.005]);
-    keyPiano.fillColor = hue;
-    keyPiano.fillColor.alpha = 0.01;
-
-    // eyes.position = [globals.e, globals.f + 5];
     eyes.position = [globals.k, globals.l + 5];
 
-    raster.position = [globals.k, globals.l-10];
+    raster.position = [globals.k, globals.l - 10];
 
-    // eyesGlow.position = [globals.e, globals.f - 10];
-
-    // mouth.position = [globals.e, globals.f + 30];
     mouth.position = [globals.k, globals.l + 30];
 
-    // eyesOpen.position = [globals.n, globals.o];
-
-
-    // map function example
-    // function mapRange(value, in_min, in_max, out_min, out_max) {
-    //   return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-    // }
-
     eyesMovementMap = mapRange(globals.n, 100, 1100, face.position.x + 20, face.position.x - 20);
-    // eyesOpen.position = [eyesMovementMap, globals.f];
-    // eyesGlow.position = [eyesMovementMap, globals.f - 10];
 
     eyesOpen.position = [eyesMovementMap, globals.l];
-    // eyesGlow.position = [eyesMovementMap, globals.l - 10];
-
-
-    // eyes.position = [eyesMovementMap, globals.f];
-    // eyesOpen.position = [globals.e, globals.f];
-    // raster.position = eyes.position;
-
-
 
     var itemTest1 = project.getItem({
         class: Path
-        // fillColor: 'black'
     });
 
     //thumb
     itemTest1.segments[0].point.x = globals.a;
     itemTest1.segments[0].point.y = globals.b;
 
-    // thumbo.position = [globals.a,globals.b];
-
-
     //index
     itemTest1.segments[1].point.x = globals.c;
     itemTest1.segments[1].point.y = globals.d;
-
-    // indexo.position = [globals.c,globals.d];
-
 
     //middle
     itemTest1.segments[2].point.x = globals.e;
     itemTest1.segments[2].point.y = globals.f;
 
-    // middo.position = [globals.e,globals.f];
-
-
     //ring
     itemTest1.segments[3].point.x = globals.g;
     itemTest1.segments[3].point.y = globals.h;
 
-    // ringo.position = [globals.g,globals.h];
-
-
     //pinky
     itemTest1.segments[4].point.x = globals.i;
     itemTest1.segments[4].point.y = globals.j;
-
-    // pinko.position = [globals.i,globals.j];
 
 }
 

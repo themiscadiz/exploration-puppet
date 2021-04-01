@@ -2,7 +2,7 @@
 
 // ********************
 // VARIABLES FOR PAPER
-window.globals = { a: 800, b: 100, c: 500, d: 100, e: 800, f: 100, g: 500, h: 100, i: 800, j: 100, k: 100, l: 100, m: 100, n: 100, o: 100, p: false, q: false };
+window.globals = { a: 800, b: 100, c: 500, d: 100, e: 800, f: 100, g: 500, h: 100, i: 800, j: 100, k: 100, l: 100, m: 100, n: 100, o: 100, p: false, q: false, rX: 0, rY: 0, sX: 0, sY: 0, tX: 0, tY: 0, sizeNote: 100, playNoteSpace: false, playNoteSpace2: false, playNoteSpace3: false, playNote: false, wSize:0, hSize:0 };
 
 
 // ****Hand Pose****
@@ -17,11 +17,17 @@ let predictions = [];
 let smoothMov = 0.1;
 // let smoothMov = 0.5;
 
+let notesSoundRadius = [3];
+let notesSound = [3];
+let notesSoundSize = 100;
+let notes;
+let playNoteSpace = false;
+let playNote = false;
 
 //Sound variables
 let mySnd;
 let soundsArray = [];
-let sounds = ["c.wav", "e.wav", "g.wav", "b.wav", "note.wav"];
+let sounds = ["e.wav", "g.wav", "c.wav", "b.wav", "note.wav"];
 let amp;
 
 //preload sounds
@@ -84,11 +90,15 @@ let ts = 25;
 
 let wSize;
 let hSize;
+
+let wSize_1;
+let hSize_1;
 // ****SET UP****
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
-  wSize = window.innerWidth;
-  hSize = window.innerHeight;
+
+  wSize_1 = width;
+  hSize_1 = height;
 
   floorH = windowHeight;
   video = createCapture(VIDEO);
@@ -124,6 +134,28 @@ function setup() {
     lerpPos.push(thispoint);
   }
 
+  // KEYS POPULATION
+  // for (let i = 0; i < 3; i++){
+  //   notes = createVector(0, 0);
+  //   notesSound.push(keys);
+  // }
+
+  notesSound[0] = createVector(width * 0.5, height / 2);
+  notesSound[1] = createVector(width * 0.7, height / 2);
+  notesSound[2] = createVector(width * 0.3, height / 2);
+
+  window.globals.sizeNote = notesSoundSize;
+
+  window.globals.rX = notesSound[0].x;
+  window.globals.rY = notesSound[0].y;
+
+  window.globals.sX = notesSound[1].x;
+  window.globals.sY = notesSound[1].y;
+
+  window.globals.tX = notesSound[2].x;
+  window.globals.tY = notesSound[2].y;
+
+
 }
 
 function modelReady() {
@@ -149,12 +181,12 @@ function draw() {
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints() {
 
-    //set sound amp and volume
-    amp = new p5.Amplitude(0.9);
+  //set sound amp and volume
+  amp = new p5.Amplitude(0.9);
 
-    for (let i = 0; i < 5; i++) {
-      soundsArray[i].setVolume(.2);
-    }
+  for (let i = 0; i < 5; i++) {
+    soundsArray[i].setVolume(.2);
+  }
 
   for (let i = 0; i < predictions.length; i += 1) {
 
@@ -174,7 +206,7 @@ function drawKeypoints() {
       noStroke();
 
       //       //  LERP
-      lerp_X = lerp(lerpPoints[j].x, prediction.landmarks[j][0], smoothMov);
+      lerp_X = lerp(lerpPoints[j].x, wSize_1 - prediction.landmarks[j][0], smoothMov);
       lerp_Y = lerp(lerpPoints[j].y, prediction.landmarks[j][1], smoothMov);
 
 
@@ -207,8 +239,8 @@ function drawKeypoints() {
     if (distance < 90) {
       window.globals.p = true;
 
-      if(!soundsArray[4].isPlaying()){
-        soundsArray[4].play();
+      if (!soundsArray[3].isPlaying()) {
+        soundsArray[3].play();
       }
 
     }
@@ -216,16 +248,74 @@ function drawKeypoints() {
       window.globals.p = false;
     }
 
-    if (palm.x > 0 && palm.x < wSize/2){
-      if(!soundsArray[3].isPlaying()){
-        soundsArray[3].play();
+    window.globals.wSize_1 = wSize;
+    window.globals.hSize_1 = hSize;
+
+    // PIANO KEYS CIRCLES
+    notesSoundRadius[0] = p5.Vector.dist(notesSound[0], middleFinger);
+    notesSoundRadius[1] = p5.Vector.dist(notesSound[1], middleFinger);
+    notesSoundRadius[2] = p5.Vector.dist(notesSound[2], middleFinger);
+
+    if (notesSoundRadius[0] < notesSoundSize) {
+      playNoteSpace = true;
+
+      if (!soundsArray[0].isPlaying()) {
+        soundsArray[0].play();
+        playNote = true;
       }
+      else { playNote = false; }
     }
-    if (palm.x > wSize/2 && palm.x < wSize){
-      if(!soundsArray[2].isPlaying()){
+
+    else { playNoteSpace = false; }
+
+    //////////////////////
+    //////////////////////
+    //////////////////////
+
+    if (notesSoundRadius[1] < notesSoundSize) {
+      playNoteSpace2 = true;
+
+      if (!soundsArray[1].isPlaying()) {
+        soundsArray[1].play();
+        playNote = true;
+      }
+      else { playNote = false; }
+    }
+
+    else { playNoteSpace2 = false; }
+
+    //////////////////////
+    //////////////////////
+    //////////////////////
+
+    if (notesSoundRadius[2] < notesSoundSize) {
+      playNoteSpace3 = true;
+
+      if (!soundsArray[2].isPlaying()) {
         soundsArray[2].play();
+        playNote = true;
       }
+      else { playNote = false; }
     }
+
+    else { playNoteSpace3 = false; }
+
+    /////////////////////
+
+    window.globals.playNoteSpace = playNoteSpace;
+    window.globals.playNoteSpace2 = playNoteSpace2;
+    window.globals.playNoteSpace3 = playNoteSpace3;
+
+    window.globals.playNote = playNote;
+    // console.log(playNoteSpace);
+
+    // if (palm.x > wSize/2 && palm.x < wSize){
+
+    //   if(!soundsArray[2].isPlaying()){
+    //     soundsArray[2].play();
+    //   }
+    // }
+
 
     // access global variables for paper.js
     window.globals.a = thumpFinger.x;
