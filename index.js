@@ -77,7 +77,6 @@ function createBlob(center, maxRadius, points) {
 
     for (var i = 0; i < points; i++) {
         var delta = new Point({
-            // length: (maxRadius * 0.5) + (Math.random() * maxRadius * 0.5),
             length: 100,
             angle: (-180 / points) * i
         });
@@ -85,12 +84,8 @@ function createBlob(center, maxRadius, points) {
         path.add(center + delta);
     }
 
-    // path.smooth();
-
     if (smooth)
-        // path.smooth({ type: 'continuous', from: -1, to: 1 }); 
         path.smooth({ type: 'catmull-rom', factor: 0.0 });
-    // path.smooth({ type: 'continuous' });
 
     // Set the shadow color of the circle to RGB black:
     path.shadowColor = new Color(0, 0, 0);
@@ -101,16 +96,6 @@ function createBlob(center, maxRadius, points) {
 
     return path;
 }
-
-
-// var rect = new Path.Rectangle({
-//     point: [globals.wSize/ 2, globals.hSize / 2],
-//     size: [globals.wSize/ 2, globals.hSize / 2]
-//     // strokeColor: 'white',
-//     // selected: true
-// });
-// rect.sendToBack();
-// rect.fillColor = '#dfedf2';
 
 var rectangle = new Rectangle(
     new Point(0, 0),
@@ -126,34 +111,21 @@ shape.sendToBack();
 
 
 keyPiano1 = new Path.Rectangle({
-    // var keyPiano1copy = new Shape.Rectangle(keyPiano1);
-    // keyPiano1copy.sendToBack();
+
     point: [20, 20],
     size: [view.size.width * .35, view.size.height * .2],
 });
 
 
 keyPiano2 = new Path.Rectangle({
-    // center: [20, 20],
-    // radius: [globals.sizeNote, globals.sizeNote],
     point: [20, 20],
     size: [view.size.width * .35, view.size.height * .2],
 });
 
 keyPiano3 = new Path.Rectangle({
-    // center: [20, 20],
-    // radius: [globals.sizeNote, globals.sizeNote],
     point: [20, 20],
     size: [view.size.width * .35, view.size.height * .2],
 });
-
-// keyPianoAura1 = new Path.Circle({
-//     center: [globals.rX, globals.rY],
-//     radius: [60, 60],
-//     strokeColor: hue2,
-//     strokeWidth: 20
-// });
-
 
 // face
 var face = new Path.Circle({
@@ -209,11 +181,6 @@ var eyeR = new Path.Arc({
 var eyes = new Group();
 eyes.children = [eyeL, eyeR];
 
-// The path is the first child of the group:
-// eyes.firstChild.fillColor = 'white';
-// eyes.lastChild.fillColor = 'white';
-
-// eyes.strokeColor = 'black';
 eyes.position = [0, 0];
 eyes.strokeWidth = 5;
 eyes.strokeCap = 'round';
@@ -230,12 +197,6 @@ mouth.strokeColor = 'black';
 // mouth.position = [30, 30];
 mouth.strokeWidth = 5;
 mouth.strokeCap = 'round';
-
-
-// mouth open
-// .
-// .
-// .
 
 var segment, path;
 var movePath = false;

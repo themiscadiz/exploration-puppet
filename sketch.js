@@ -76,13 +76,6 @@ let x = 0;
 let y = 0;
 let pointsLength = 30;
 
-// // FACE:
-// // by default all options are set to true
-// const detection_options = {
-//   withLandmarks: true,
-//   withDescriptors: false,
-// }
-
 // ****Eyes****
 let eye1, eye2;
 let ts = 25;
@@ -92,6 +85,7 @@ let hSize;
 
 let wSize_1;
 let hSize_1;
+
 // ****SET UP****
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -120,23 +114,12 @@ function setup() {
     lerpPoints.push(thispoint);
   }
 
-  // // FACE
-  // faceapi = ml5.faceApi(video, detection_options, modelReadyFace)
-
-  // EYES
-  // eye1 = new Eye(100, 100, 120);
-
   //  LERP
   for (let i = 0; i < pointsLength; i++) {
     let thispoint = createVector(0, 0);
     lerpPos.push(thispoint);
   }
 
-  // KEYS POPULATION
-  // for (let i = 0; i < 3; i++){
-  //   notes = createVector(0, 0);
-  //   notesSound.push(keys);
-  // }
   heightButton = height / 1.2;
   notesSound[0] = createVector(0, heightButton);
   notesSound[1] = createVector(width * 0.3, heightButton);
@@ -165,23 +148,12 @@ function setup() {
   window.globals.wX = notesSound[5].x;
   window.globals.wY = notesSound[5].y;
 
-
 }
 
 function modelReady() {
   console.log("Hand Model Ready!");
   let showValue = document.getElementById("show-value");
   showValue.innerHTML = `<h2>Puppet is Ready!</h2>`;
-
-  // FACE
-  // faceapi = ml5.faceApi(video, detection_options, modelReadyFace)
-}
-
-function modelReadyFace() {
-  console.log('Face Model Ready!')
-
-  // console.log(faceapi)
-  // faceapi.detect(gotResults)
 }
 
 function draw() {
@@ -223,17 +195,12 @@ function drawKeypoints() {
       lerp_X = lerp(lerpPoints[j].x, wSize_1 - (map(prediction.landmarks[j][0], 0, width, 0 -width / 10, width + width / 3)), smoothMov);
       lerp_Y = lerp(lerpPoints[j].y, map(prediction.landmarks[j][1], 0, height / 2, 0, height), smoothMov);
 
-      // map(focalPoint.x, 0, width, sides.r_x*1.5,  sides.l_x);0-width/3, - width/1.5
-
-
       let keypointPos = createVector(lerp_X, lerp_Y);
 
       lerpPoints[j] = keypointPos;
 
       // // All Point after Lerp
       previousKeypoint = prediction.landmarks[j];
-
-
     }
 
     thumpFinger = createVector(lerpPoints[4].x, lerpPoints[4].y);
@@ -331,69 +298,11 @@ function drawKeypoints() {
     //////////////////////
     //////////////////////
 
-    // if (notesSoundRadius[0] < notesSoundSize) {
-    //   playNoteSpace = true;
-
-    //   if (!soundsArray[0].isPlaying()) {
-    //     soundsArray[0].play();
-    //     playNote = true;
-    //   }
-    //   else { playNote = false; }
-    // }
-
-    // else { playNoteSpace = false; }
-
-    // //////////////////////
-    // //////////////////////
-    // //////////////////////
-
-    // if (notesSoundRadius[1] < notesSoundSize) {
-    //   playNoteSpace2 = true;
-
-    //   if (!soundsArray[1].isPlaying()) {
-    //     soundsArray[1].play();
-    //     playNote = true;
-    //   }
-    //   else { playNote = false; }
-    // }
-
-    // else { playNoteSpace2 = false; }
-
-    // //////////////////////
-    // //////////////////////
-    // //////////////////////
-
-    // if (notesSoundRadius[2] < notesSoundSize) {
-    //   playNoteSpace3 = true;
-
-    //   if (!soundsArray[2].isPlaying()) {
-    //     soundsArray[2].play();
-    //     playNote = true;
-    //   }
-    //   else { playNote = false; }
-    // }
-
-    // else { playNoteSpace3 = false; }
-
-    //////////////////////
-    //////////////////////
-    //////////////////////
-
     window.globals.playNoteSpace = playNoteSpace;
     window.globals.playNoteSpace2 = playNoteSpace2;
     window.globals.playNoteSpace3 = playNoteSpace3;
 
     window.globals.playNote = playNote;
-    // console.log(playNoteSpace);
-
-    // if (palm.x > wSize/2 && palm.x < wSize){
-
-    //   if(!soundsArray[2].isPlaying()){
-    //     soundsArray[2].play();
-    //   }
-    // }
-
-  
 
     // access global variables for paper.js
     window.globals.a = thumpFinger.x;
@@ -415,122 +324,7 @@ function drawKeypoints() {
     window.globals.k = middleFinger.x;
     window.globals.l = middleFinger.y;
 
-
     window.globals.m = floorH;
   }
 
 }
-
-
-
-// // Face analysis
-// function gotResults(err, result) {
-//   if (err) {
-//     console.log(err)
-//     return
-//   }
-//   detections = result;
-//   image(video, 0, 0, width, height)
-//   if (detections) {
-//     if (detections.length > 0) {
-//       drawLandmarks(detections)
-//     }
-//   }
-//   // faceapi.detect(gotResults)
-// }
-
-
-// function drawLandmarks(detections) {
-//   noFill();
-//   stroke(161, 95, 251)
-//   strokeWeight(2)
-
-//   for (let i = 0; i < detections.length; i++) {
-//     const allPoints = detections[i].landmarks._positions;
-//     drawCircles(allPoints);
-
-//   }
-// }
-
-// function drawCircles(feature) {
-//   for (let i = 0; i < feature.length; i++) {
-
-//     // WITH LERP
-//     lerpPos[i] = createVector(feature[i]._x, feature[i]._y);
-
-//     x = lerp(lerpPos[i].x, feature[i]._x, smoothMov);
-//     y = lerp(lerpPos[i].y, feature[i]._y, smoothMov);
-
-//     let smoothPoints = createVector(x, y);
-//     lerpPos[i] = smoothPoints;
-//   }
-
-//   let focalPoint = createVector(lerpPos[27].x, lerpPos[27].y);
-
-//   let mouthTop = createVector(lerpPos[51].x, lerpPos[51].y);
-//   let mouthBottom = createVector(lerpPos[57].x, lerpPos[57].y);
-
-//   let mouthDist = mouthTop.dist(mouthBottom);
-
-//   if (mouthDist > 40) {
-//     window.globals.q = true;
-//   }
-//   else {
-//     window.globals.q = false;
-//   }
-//   // ellipse(focalPoint.x, focalPoint.y, 10);
-
-//   // eyes movement
-//   fill(255);
-
-//   let sides = {
-//     l_x: 100,
-//     l_y: 0,
-//     r_x: 175,
-//     r_y: 50
-//   }
-
-//   // rect(sides.l_x, sides.l_y, sides.r_x, sides.r_y);
-
-//   // let xMap = map(focalPoint.x, 0, width, sides.r_x*1.5,  sides.l_x);
-
-//   // fill(0);
-//   // ellipse(xMap, 25, 20,20);
-//   // ellipse(xMap+ 20, 25, 20,20);
-
-//   window.globals.n = focalPoint.x;
-//   window.globals.o = focalPoint.y;
-
-//   eye1.update(window.globals.n, window.globals.o);
-//   eye1.display();
-//   // eye2.update(window.globals.n, window.globals.o);
-//   // eye2.display();
-// }
-
-// function Eye(trackingx, trackingy, ts) {
-//   this.x = trackingx;
-//   this.y = trackingy;
-//   this.size = ts;
-//   this.angle = 0;
-
-//   this.update = function (tracking_x, tracking_y) {
-//     this.angle = atan2(tracking_y - this.y, tracking_x - this.x);
-//   };
-
-//   this.display = function () {
-//     push();
-//     translate(this.x, this.y);
-//     fill(255);
-
-//     ellipse(0, 0, this.size, this.size);
-
-//     rotate(this.angle);
-//     fill(153, 204, 0);
-
-//     ellipse(this.size / 4, 0, this.size / 2, this.size / 2);
-//     pop();
-//   };
-// }
-
-
-
