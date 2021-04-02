@@ -11,7 +11,8 @@ window.globals = { a: 800, b: 100, c: 500, d: 100, e: 800, f: 100, g: 500, h: 10
 let handpose;
 let video;
 let predictions = [];
-let smoothMov = 0.1;
+// let smoothMov = 0.1;
+let smoothMov = 0.3;
 
 let notesSoundRadius = [3];
 let notesSound = [6];
@@ -219,7 +220,7 @@ function drawKeypoints() {
     // Use distance between index and thumb to set variable for open and closed mouth
     let distance = indexFinger.dist(thumpFinger);
 
-    if (distance < 150) {
+    if (distance < 90) {
       window.globals.p = true;
 
       if (!soundsArray[3].isPlaying()) {
@@ -245,11 +246,11 @@ function drawKeypoints() {
     //////////////////////
     //////////////////////
 
-    function positionTracking(middleFinger, heightButton) {
+    function positionTracking(finger, heightButton) {
 
       if (
-        middleFinger.x > notesSound[0].x && middleFinger.x < notesSound[1].x &&
-        middleFinger.y > heightButton) {
+        finger.x > notesSound[0].x && finger.x < notesSound[1].x &&
+        finger.y > heightButton) {
 
         playNoteSpace = true;
 
@@ -263,8 +264,8 @@ function drawKeypoints() {
       else { playNoteSpace = false; }
 
       if (
-        middleFinger.x > notesSound[2].x && middleFinger.x < notesSound[3].x &&
-        middleFinger.y > heightButton) {
+        finger.x > notesSound[2].x && finger.x < notesSound[3].x &&
+        finger.y > heightButton) {
 
         playNoteSpace2 = true;
 
@@ -278,8 +279,7 @@ function drawKeypoints() {
       else { playNoteSpace2 = false; }
 
       if (
-        middleFinger.x > notesSound[4].x && middleFinger.x < notesSound[5].x &&
-        middleFinger.y > heightButton) {
+        finger.x > notesSound[4].x && finger.x < notesSound[5].x && finger.y > heightButton) {
 
         playNoteSpace3 = true;
 
