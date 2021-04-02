@@ -2,23 +2,19 @@
 
 // ********************
 // VARIABLES FOR PAPER
-window.globals = { a: 800, b: 100, c: 500, d: 100, e: 800, f: 100, g: 500, h: 100, i: 800, j: 100, k: 100, l: 100, m: 100, n: 100, o: 100, p: false, q: false, rX: 0, rY: 0, sX: 0, sY: 0, tX: 0, tY: 0, sizeNote: 100, playNoteSpace: false, playNoteSpace2: false, playNoteSpace3: false, playNote: false, wSize:0, hSize:0 };
+// window.globals = { a: 800, b: 100, c: 500, d: 100, e: 800, f: 100, g: 500, h: 100, i: 800, j: 100, k: 100, l: 100, m: 100, n: 100, o: 100, p: false, q: false, rX: 0, rY: 0, sX: 0, sY: 0, tX: 0, tY: 0, uX: 0, uY: 0, vX: 0, vY: 0, wX: 0, wY: 0, sizeNote: 100, playNoteSpace: false, playNoteSpace2: false, playNoteSpace3: false, playNote: false, wSize: 0, hSize: 0 };
+
+window.globals = { a: 800, b: 100, c: 500, d: 100, e: 800, f: 100, g: 500, h: 100, i: 800, j: 100, k: 100, l: 100, m: 100, p: false, rX: 0, rY: 0, sX: 0, sY: 0, tX: 0, tY: 0, uX: 0, uY: 0, vX: 0, vY: 0, wX: 0, wY: 0, sizeNote: 100, playNoteSpace: false, playNoteSpace2: false, playNoteSpace3: false, playNote: false, wSize: 0, hSize: 0 };
 
 
 // ****Hand Pose****
 let handpose;
 let video;
 let predictions = [];
-
-// let s1, s2, s3;
-// let gravity = 9.0;
-// let mass = 2.0;
-// let newIndicator;
 let smoothMov = 0.1;
-// let smoothMov = 0.5;
 
 let notesSoundRadius = [3];
-let notesSound = [3];
+let notesSound = [6];
 let notesSoundSize = 100;
 let notes;
 let playNoteSpace = false;
@@ -27,7 +23,8 @@ let playNote = false;
 //Sound variables
 let mySnd;
 let soundsArray = [];
-let sounds = ["e.wav", "g.wav", "c.wav", "b.wav", "note.wav"];
+// let sounds = ["e.wav", "g.wav", "c.wav", "b.wav", "note.wav"];
+let sounds = ["HandPuppet_G.wav", "HandPuppet_E.wav", "HandPuppet_C.wav", "note.wav", "Voice03.wav"];
 let amp;
 
 //preload sounds
@@ -64,6 +61,8 @@ let pinkyFinger;
 let palm;
 let floorH;
 
+let heightButton;
+
 
 // ****FACE****
 
@@ -77,12 +76,12 @@ let x = 0;
 let y = 0;
 let pointsLength = 30;
 
-// FACE:
-// by default all options are set to true
-const detection_options = {
-  withLandmarks: true,
-  withDescriptors: false,
-}
+// // FACE:
+// // by default all options are set to true
+// const detection_options = {
+//   withLandmarks: true,
+//   withDescriptors: false,
+// }
 
 // ****Eyes****
 let eye1, eye2;
@@ -125,8 +124,7 @@ function setup() {
   // faceapi = ml5.faceApi(video, detection_options, modelReadyFace)
 
   // EYES
-  eye1 = new Eye(100, 100, 120);
-  // eye2 = new Eye(300, 100, 120);
+  // eye1 = new Eye(100, 100, 120);
 
   //  LERP
   for (let i = 0; i < pointsLength; i++) {
@@ -139,21 +137,33 @@ function setup() {
   //   notes = createVector(0, 0);
   //   notesSound.push(keys);
   // }
+  heightButton = height / 1.2;
+  notesSound[0] = createVector(0, heightButton);
+  notesSound[1] = createVector(width * 0.3, heightButton);
 
-  notesSound[0] = createVector(width * 0.5, height / 2);
-  notesSound[1] = createVector(width * 0.7, height / 2);
-  notesSound[2] = createVector(width * 0.3, height / 2);
+  notesSound[2] = createVector(width * 0.3, heightButton);
+  notesSound[3] = createVector(width * 0.5, heightButton);
+
+  notesSound[4] = createVector(width * 0.7, heightButton);
+  notesSound[5] = createVector(width, heightButton);
 
   window.globals.sizeNote = notesSoundSize;
 
   window.globals.rX = notesSound[0].x;
   window.globals.rY = notesSound[0].y;
-
   window.globals.sX = notesSound[1].x;
   window.globals.sY = notesSound[1].y;
 
+
   window.globals.tX = notesSound[2].x;
   window.globals.tY = notesSound[2].y;
+  window.globals.uX = notesSound[3].x;
+  window.globals.uY = notesSound[3].y;
+
+  window.globals.vX = notesSound[4].x;
+  window.globals.vY = notesSound[4].y;
+  window.globals.wX = notesSound[5].x;
+  window.globals.wY = notesSound[5].y;
 
 
 }
@@ -206,8 +216,14 @@ function drawKeypoints() {
       noStroke();
 
       //       //  LERP
-      lerp_X = lerp(lerpPoints[j].x, wSize_1 - prediction.landmarks[j][0], smoothMov);
-      lerp_Y = lerp(lerpPoints[j].y, prediction.landmarks[j][1], smoothMov);
+
+      // lerp_X = lerp(lerpPoints[j].x, wSize_1 - prediction.landmarks[j][0], smoothMov);
+      // lerp_Y = lerp(lerpPoints[j].y, prediction.landmarks[j][1], smoothMov);
+
+      lerp_X = lerp(lerpPoints[j].x, wSize_1 - (map(prediction.landmarks[j][0], 0, width, 0 -width / 10, width + width / 3)), smoothMov);
+      lerp_Y = lerp(lerpPoints[j].y, map(prediction.landmarks[j][1], 0, height / 2, 0, height), smoothMov);
+
+      // map(focalPoint.x, 0, width, sides.r_x*1.5,  sides.l_x);0-width/3, - width/1.5
 
 
       let keypointPos = createVector(lerp_X, lerp_Y);
@@ -236,7 +252,7 @@ function drawKeypoints() {
     // Use distance between index and thumb to set variable for open and closed mouth
     let distance = indexFinger.dist(thumpFinger);
 
-    if (distance < 90) {
+    if (distance < 150) {
       window.globals.p = true;
 
       if (!soundsArray[3].isPlaying()) {
@@ -256,51 +272,112 @@ function drawKeypoints() {
     notesSoundRadius[1] = p5.Vector.dist(notesSound[1], middleFinger);
     notesSoundRadius[2] = p5.Vector.dist(notesSound[2], middleFinger);
 
-    if (notesSoundRadius[0] < notesSoundSize) {
-      playNoteSpace = true;
+    positionTracking(thumpFinger, heightButton);
 
-      if (!soundsArray[0].isPlaying()) {
-        soundsArray[0].play();
-        playNote = true;
+    //////////////////////
+    //////////////////////
+    //////////////////////
+
+    function positionTracking(middleFinger, heightButton) {
+
+      if (
+        middleFinger.x > notesSound[0].x && middleFinger.x < notesSound[1].x &&
+        middleFinger.y > heightButton) {
+
+        playNoteSpace = true;
+
+        if (!soundsArray[0].isPlaying()) {
+          soundsArray[0].play();
+          playNote = true;
+        }
+        else { playNote = false; }
       }
-      else { playNote = false; }
+
+      else { playNoteSpace = false; }
+
+      if (
+        middleFinger.x > notesSound[2].x && middleFinger.x < notesSound[3].x &&
+        middleFinger.y > heightButton) {
+
+        playNoteSpace2 = true;
+
+        if (!soundsArray[1].isPlaying()) {
+          soundsArray[1].play();
+          playNote = true;
+        }
+        else { playNote = false; }
+      }
+
+      else { playNoteSpace2 = false; }
+
+      if (
+        middleFinger.x > notesSound[4].x && middleFinger.x < notesSound[5].x &&
+        middleFinger.y > heightButton) {
+
+        playNoteSpace3 = true;
+
+        if (!soundsArray[2].isPlaying()) {
+          soundsArray[2].play();
+          playNote = true;
+        }
+        else { playNote = false; }
+      }
+
+      else { playNoteSpace3 = false; }
+
     }
 
-    else { playNoteSpace = false; }
-
     //////////////////////
     //////////////////////
     //////////////////////
 
-    if (notesSoundRadius[1] < notesSoundSize) {
-      playNoteSpace2 = true;
+    // if (notesSoundRadius[0] < notesSoundSize) {
+    //   playNoteSpace = true;
 
-      if (!soundsArray[1].isPlaying()) {
-        soundsArray[1].play();
-        playNote = true;
-      }
-      else { playNote = false; }
-    }
+    //   if (!soundsArray[0].isPlaying()) {
+    //     soundsArray[0].play();
+    //     playNote = true;
+    //   }
+    //   else { playNote = false; }
+    // }
 
-    else { playNoteSpace2 = false; }
+    // else { playNoteSpace = false; }
+
+    // //////////////////////
+    // //////////////////////
+    // //////////////////////
+
+    // if (notesSoundRadius[1] < notesSoundSize) {
+    //   playNoteSpace2 = true;
+
+    //   if (!soundsArray[1].isPlaying()) {
+    //     soundsArray[1].play();
+    //     playNote = true;
+    //   }
+    //   else { playNote = false; }
+    // }
+
+    // else { playNoteSpace2 = false; }
+
+    // //////////////////////
+    // //////////////////////
+    // //////////////////////
+
+    // if (notesSoundRadius[2] < notesSoundSize) {
+    //   playNoteSpace3 = true;
+
+    //   if (!soundsArray[2].isPlaying()) {
+    //     soundsArray[2].play();
+    //     playNote = true;
+    //   }
+    //   else { playNote = false; }
+    // }
+
+    // else { playNoteSpace3 = false; }
 
     //////////////////////
     //////////////////////
     //////////////////////
-
-    if (notesSoundRadius[2] < notesSoundSize) {
-      playNoteSpace3 = true;
-
-      if (!soundsArray[2].isPlaying()) {
-        soundsArray[2].play();
-        playNote = true;
-      }
-      else { playNote = false; }
-    }
-
-    else { playNoteSpace3 = false; }
-
-    /////////////////////
 
     window.globals.playNoteSpace = playNoteSpace;
     window.globals.playNoteSpace2 = playNoteSpace2;
@@ -316,6 +393,7 @@ function drawKeypoints() {
     //   }
     // }
 
+  
 
     // access global variables for paper.js
     window.globals.a = thumpFinger.x;
@@ -340,118 +418,119 @@ function drawKeypoints() {
 
     window.globals.m = floorH;
   }
+
 }
 
 
 
-// Face analysis
-function gotResults(err, result) {
-  if (err) {
-    console.log(err)
-    return
-  }
-  detections = result;
-  image(video, 0, 0, width, height)
-  if (detections) {
-    if (detections.length > 0) {
-      drawLandmarks(detections)
-    }
-  }
-  // faceapi.detect(gotResults)
-}
+// // Face analysis
+// function gotResults(err, result) {
+//   if (err) {
+//     console.log(err)
+//     return
+//   }
+//   detections = result;
+//   image(video, 0, 0, width, height)
+//   if (detections) {
+//     if (detections.length > 0) {
+//       drawLandmarks(detections)
+//     }
+//   }
+//   // faceapi.detect(gotResults)
+// }
 
 
-function drawLandmarks(detections) {
-  noFill();
-  stroke(161, 95, 251)
-  strokeWeight(2)
+// function drawLandmarks(detections) {
+//   noFill();
+//   stroke(161, 95, 251)
+//   strokeWeight(2)
 
-  for (let i = 0; i < detections.length; i++) {
-    const allPoints = detections[i].landmarks._positions;
-    drawCircles(allPoints);
+//   for (let i = 0; i < detections.length; i++) {
+//     const allPoints = detections[i].landmarks._positions;
+//     drawCircles(allPoints);
 
-  }
-}
+//   }
+// }
 
-function drawCircles(feature) {
-  for (let i = 0; i < feature.length; i++) {
+// function drawCircles(feature) {
+//   for (let i = 0; i < feature.length; i++) {
 
-    // WITH LERP
-    lerpPos[i] = createVector(feature[i]._x, feature[i]._y);
+//     // WITH LERP
+//     lerpPos[i] = createVector(feature[i]._x, feature[i]._y);
 
-    x = lerp(lerpPos[i].x, feature[i]._x, smoothMov);
-    y = lerp(lerpPos[i].y, feature[i]._y, smoothMov);
+//     x = lerp(lerpPos[i].x, feature[i]._x, smoothMov);
+//     y = lerp(lerpPos[i].y, feature[i]._y, smoothMov);
 
-    let smoothPoints = createVector(x, y);
-    lerpPos[i] = smoothPoints;
-  }
+//     let smoothPoints = createVector(x, y);
+//     lerpPos[i] = smoothPoints;
+//   }
 
-  let focalPoint = createVector(lerpPos[27].x, lerpPos[27].y);
+//   let focalPoint = createVector(lerpPos[27].x, lerpPos[27].y);
 
-  let mouthTop = createVector(lerpPos[51].x, lerpPos[51].y);
-  let mouthBottom = createVector(lerpPos[57].x, lerpPos[57].y);
+//   let mouthTop = createVector(lerpPos[51].x, lerpPos[51].y);
+//   let mouthBottom = createVector(lerpPos[57].x, lerpPos[57].y);
 
-  let mouthDist = mouthTop.dist(mouthBottom);
+//   let mouthDist = mouthTop.dist(mouthBottom);
 
-  if (mouthDist > 40) {
-    window.globals.q = true;
-  }
-  else {
-    window.globals.q = false;
-  }
-  // ellipse(focalPoint.x, focalPoint.y, 10);
+//   if (mouthDist > 40) {
+//     window.globals.q = true;
+//   }
+//   else {
+//     window.globals.q = false;
+//   }
+//   // ellipse(focalPoint.x, focalPoint.y, 10);
 
-  // eyes movement
-  fill(255);
+//   // eyes movement
+//   fill(255);
 
-  let sides = {
-    l_x: 100,
-    l_y: 0,
-    r_x: 175,
-    r_y: 50
-  }
+//   let sides = {
+//     l_x: 100,
+//     l_y: 0,
+//     r_x: 175,
+//     r_y: 50
+//   }
 
-  // rect(sides.l_x, sides.l_y, sides.r_x, sides.r_y);
+//   // rect(sides.l_x, sides.l_y, sides.r_x, sides.r_y);
 
-  // let xMap = map(focalPoint.x, 0, width, sides.r_x*1.5,  sides.l_x);
+//   // let xMap = map(focalPoint.x, 0, width, sides.r_x*1.5,  sides.l_x);
 
-  // fill(0);
-  // ellipse(xMap, 25, 20,20);
-  // ellipse(xMap+ 20, 25, 20,20);
+//   // fill(0);
+//   // ellipse(xMap, 25, 20,20);
+//   // ellipse(xMap+ 20, 25, 20,20);
 
-  window.globals.n = focalPoint.x;
-  window.globals.o = focalPoint.y;
+//   window.globals.n = focalPoint.x;
+//   window.globals.o = focalPoint.y;
 
-  eye1.update(window.globals.n, window.globals.o);
-  eye1.display();
-  // eye2.update(window.globals.n, window.globals.o);
-  // eye2.display();
-}
+//   eye1.update(window.globals.n, window.globals.o);
+//   eye1.display();
+//   // eye2.update(window.globals.n, window.globals.o);
+//   // eye2.display();
+// }
 
-function Eye(trackingx, trackingy, ts) {
-  this.x = trackingx;
-  this.y = trackingy;
-  this.size = ts;
-  this.angle = 0;
+// function Eye(trackingx, trackingy, ts) {
+//   this.x = trackingx;
+//   this.y = trackingy;
+//   this.size = ts;
+//   this.angle = 0;
 
-  this.update = function (tracking_x, tracking_y) {
-    this.angle = atan2(tracking_y - this.y, tracking_x - this.x);
-  };
+//   this.update = function (tracking_x, tracking_y) {
+//     this.angle = atan2(tracking_y - this.y, tracking_x - this.x);
+//   };
 
-  this.display = function () {
-    push();
-    translate(this.x, this.y);
-    fill(255);
+//   this.display = function () {
+//     push();
+//     translate(this.x, this.y);
+//     fill(255);
 
-    ellipse(0, 0, this.size, this.size);
+//     ellipse(0, 0, this.size, this.size);
 
-    rotate(this.angle);
-    fill(153, 204, 0);
+//     rotate(this.angle);
+//     fill(153, 204, 0);
 
-    ellipse(this.size / 4, 0, this.size / 2, this.size / 2);
-    pop();
-  };
-}
+//     ellipse(this.size / 4, 0, this.size / 2, this.size / 2);
+//     pop();
+//   };
+// }
 
 
 

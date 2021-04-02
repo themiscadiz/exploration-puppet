@@ -47,7 +47,6 @@ createPaths(hue);
 
 function createPaths(hue) {
 
-
     var radiusDelta = values.maxRadius - values.minRadius;
 
     var pointsDelta = values.maxPoints - values.minPoints;
@@ -63,7 +62,6 @@ function createPaths(hue) {
         // var hue = new Color({ hue: Math.random() * 360, saturation: .50, brightness: 1 })
         globalPath.fillColor = hue;
         globalPath.strokeColor = hue;
-
 
         globalPath.strokeWidth = 20;
         globalPath.strokeCap = 'round';
@@ -117,7 +115,7 @@ function createBlob(center, maxRadius, points) {
 var rectangle = new Rectangle(
     new Point(0, 0),
     new Size(view.size.width, view.size.height)
-    
+
 );
 
 var shape = new Shape.Rectangle(rectangle);
@@ -127,22 +125,26 @@ shape.sendToBack();
 
 
 
-keyPiano1 = new Path.Circle({
-    center: [20, 20],
-    radius: [globals.sizeNote, globals.sizeNote],
-    // strokeColor: 'black'
+keyPiano1 = new Path.Rectangle({
+    // var keyPiano1copy = new Shape.Rectangle(keyPiano1);
+    // keyPiano1copy.sendToBack();
+    point: [20, 20],
+    size: [view.size.width * .35, view.size.height * .2],
 });
 
-keyPiano2 = new Path.Circle({
-    center: [20, 20],
-    radius: [globals.sizeNote, globals.sizeNote],
-    // strokeColor: 'black'
+
+keyPiano2 = new Path.Rectangle({
+    // center: [20, 20],
+    // radius: [globals.sizeNote, globals.sizeNote],
+    point: [20, 20],
+    size: [view.size.width * .35, view.size.height * .2],
 });
 
-keyPiano3 = new Path.Circle({
-    center: [20, 20],
-    radius: [globals.sizeNote, globals.sizeNote],
-    // strokeColor: 'black'
+keyPiano3 = new Path.Rectangle({
+    // center: [20, 20],
+    // radius: [globals.sizeNote, globals.sizeNote],
+    point: [20, 20],
+    size: [view.size.width * .35, view.size.height * .2],
 });
 
 // keyPianoAura1 = new Path.Circle({
@@ -163,7 +165,7 @@ var face = new Path.Circle({
     // Set the shadow color of the circle to RGB black:
     shadowColor: new Color('#4a4a4a'),
     // Set the shadow blur radius to 12:
-    shadowBlur: 12, 
+    shadowBlur: 12,
     // Offset the shadow by { x: 5, y: 5 }
     shadowOffset: new Point(1, 1)
 });
@@ -247,12 +249,43 @@ raster.scale(0.1);
 
 function onFrame(event) {
 
-    keyPiano1.position = [globals.rX, globals.rY];
-    keyPiano2.position = [globals.sX, globals.sY];
-    keyPiano3.position = [globals.tX, globals.tY];
+    // keyPiano1.position = [globals.rX + globals.tX / 3, globals.rY + globals.rY / 10];
+
+    // keyPiano2.position = [globals.tX + globals.tX / 3, globals.tY + globals.tY / 10];
+
+    // keyPiano3.position = [globals.vX + globals.vX / 3, globals.vY + globals.vY / 10];
+
+    keyPiano1.position = [globals.rX + globals.tX / 2, globals.rY + globals.rY / 10];
+
+    keyPiano2.position = [globals.tX + globals.tX / 1.5, globals.tY + globals.tY / 10];
+
+    keyPiano3.position = [globals.vX + globals.vX / 5, globals.vY + globals.vY / 10];
 
     // shape.fillColor = hue3;
     shape.fillColor = '#f0ffff';
+
+    if (globals.playNoteSpace) {
+
+        keyPiano1.fillColor = hue2;
+        keyPiano1.fillColor.alpha = 0.5;
+        shape.fillColor.alpha = 0.5;
+
+        keyPiano1.shadowColor = new Color('#3b3b3b');
+        keyPiano1.shadowBlur = 0;
+        keyPiano1.shadowOffset = new Point(0, 0);
+    }
+
+    else {
+        keyPiano1.fillColor = hue2;
+        keyPiano1.fillColor.alpha = 1;
+        shape.fillColor.alpha = 1;
+
+        keyPiano1.shadowColor = new Color('#3b3b3b');
+        keyPiano1.shadowBlur = 12;
+        keyPiano1.shadowOffset = new Point(5, 5);
+    }
+
+
 
     if (globals.playNoteSpace2) {
 
@@ -262,23 +295,18 @@ function onFrame(event) {
         shape.fillColor.alpha = 0.5;
 
         keyPiano2.shadowColor = new Color('#3b3b3b');
-        // Set the shadow blur radius to 12:
         keyPiano2.shadowBlur = 0;
-        // Offset the shadow by { x: 5, y: 5 }
         keyPiano2.shadowOffset = new Point(0, 0);
 
-    
+
     }
     else {
         keyPiano2.fillColor = hue2;
-        // keyPiano2.fillColor = new Color(1, 0, 1);
         keyPiano2.fillColor.alpha = 1;
         shape.fillColor.alpha = 1;
 
         keyPiano2.shadowColor = new Color('#3b3b3b');
-        // Set the shadow blur radius to 12:
         keyPiano2.shadowBlur = 12;
-        // Offset the shadow by { x: 5, y: 5 }
         keyPiano2.shadowOffset = new Point(5, 5);
     }
 
@@ -289,77 +317,25 @@ function onFrame(event) {
         shape.fillColor.alpha = 0.5;
 
         keyPiano3.shadowColor = new Color('#3b3b3b');
-        // Set the shadow blur radius to 12:
         keyPiano3.shadowBlur = 0;
-        // Offset the shadow by { x: 5, y: 5 }
         keyPiano3.shadowOffset = new Point(0, 0);
     }
     else {
         keyPiano3.fillColor = hue2;
-        // keyPiano3.fillColor = new Color(1, 0, 1);
         keyPiano3.fillColor.alpha = 1;
         shape.fillColor.alpha = 1;
 
         keyPiano3.shadowColor = new Color('#3b3b3b');
-        // Set the shadow blur radius to 12:
         keyPiano3.shadowBlur = 12;
-        // Offset the shadow by { x: 5, y: 5 }
         keyPiano3.shadowOffset = new Point(5, 5);
     }
 
 
-    if (globals.playNoteSpace) {
-
-        keyPiano1.fillColor = hue2;
-        keyPiano1.fillColor.alpha = 0.5;
-        shape.fillColor.alpha = 0.5;
-        // shape.fillColor.saturation = .20;
-
-        // auraMove = auraMove + 10;
-
-        // keyPianoAura1.position = [globals.rX, globals.rY];
-
-        // var clones = 10;
-        // var angle = 360 / clones;
-
-        // for (var i = 0; i < clones; i++) {
-        //     clonedPath = keyPianoAura1.clone();
-        //     clonedPath.rotate(angle * i, keyPianoAura1.bounds.topLeft);
-        // };
-
-        // opac = 4;
-
-        keyPiano1.shadowColor = new Color('#3b3b3b');
-        // Set the shadow blur radius to 12:
-        keyPiano1.shadowBlur = 0;
-        // Offset the shadow by { x: 5, y: 5 }
-        keyPiano1.shadowOffset = new Point(0, 0);
-    }
-
-    else {
-        // keyPiano1.fillColor = new Color(1, 0, 1);
-        keyPiano1.fillColor = hue2;
-        // keyPiano1.fillColor = new Color(1, 0, 1);
-        keyPiano1.fillColor.alpha = 1;
-        shape.fillColor.alpha = 1;
-        // shape.fillColor.saturation = .90;
-
-        keyPiano1.shadowColor = new Color('#3b3b3b');
-        // Set the shadow blur radius to 12:
-        keyPiano1.shadowBlur = 12;
-        // Offset the shadow by { x: 5, y: 5 }
-        keyPiano1.shadowOffset = new Point(5, 5);
 
 
-        // auraMove = 0;
-        // opac = 1;
-    }
-    // console.log("paper note ", globals.playNoteSpace);
-    // keyPianoAura1.opacity = opac;
 
     if (globals.playNote) { }
     else { }
-    // console.log(globals.playNote);
 
     blinkMotion = globals.p;
     mouthMotion = globals.p;

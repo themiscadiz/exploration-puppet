@@ -1,108 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 html,
 body {
-margin: 0;
-overflow: hidden;
-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* Scale canvas with resize attribute to full size */
 canvas[resize] {
-width: 100%;
-height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 h2, h3{
-color: #558a7e;
-/* padding-left: 3rem; */
+  color: #558a7e;
 }
 
 header{
-position: absolute;
-text-align: center;
-display: flex;
-justify-content: space-between;
+  position: absolute;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
 
-z-index: 100;
-height: 100;
-width: 100%;
-left: 0;
-right: 0;
-background-color: #f0ffff;
-box-shadow: 4px 4px 4px rgb(171, 179, 179);
-/* opacity: .70; */
+  z-index: 100;
+  height: 100;
+  width: 100%;
+  left: 0;
+  right: 0;
+  background-color: #f0ffff;
+  box-shadow: 4px 4px 4px rgb(171, 179, 179);
 
 }
 
 #back{
-    visibility: hidden;
+  visibility: hidden;
 }
 .information{
-justify-content: center;
-align-items: center;
-/* text-align: left; */
-/* opacity: 1; */
-/* opacity: .99; */
+  justify-content: center;
+  align-items: center;
 }
 .about{
-/* margin: 1rem; */
-margin: 1rem 2rem;
-width: 70px;
-height: 70px;
-border-radius: 70px;
-/* background-color: #c9f9ee; */
-background: #E6F4F4;
-box-shadow: 10px 10px 6px #B2CCCC, -10px -10px 6px rgba(239, 249, 250, 0.78);
-font-size: 20px;
-font-weight: 600;
-stroke-opacity: .0;
-border-style: none;
-outline: none;
-/* opacity: 1; */
+  margin: 1rem 2rem;
+  width: 70px;
+  height: 70px;
+  border-radius: 70px;
+  background: #E6F4F4;
+  box-shadow: 10px 10px 6px #B2CCCC, -10px -10px 6px rgba(239, 249, 250, 0.78);
+  font-size: 20px;
+  font-weight: 600;
+  stroke-opacity: .0;
+  border-style: none;
+  outline: none;
 }
 
 .about:hover{
-color: azure;
-background: #8C728E;
-box-shadow: -6px -6px 6px 2px #DFF3F0, 6px 6px 6px 2px #8CADAD;
+  color: azure;
+  background: #8C728E;
+  box-shadow: -6px -6px 6px 2px #DFF3F0, 6px 6px 6px 2px #8CADAD;
 }
-.about:active{background: #8C728E;
-box-shadow: -6px -6px 6px 2px #DFF3F0, 6px 6px 6px 2px #8CADAD;}
+.about:active{
+  background: #8C728E;
+  box-shadow: -6px -6px 6px 2px #DFF3F0, 6px 6px 6px 2px #8CADAD;}
 
 
 /* The Modal (background) */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-  }
-  
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.about_info{
+  text-align: center;
+  justify-content: center;
+  height: 60vh;
+}
+.image-about{
+  height: 50vh;
+}
+.about_info, h3{
+  color: black;
+}
