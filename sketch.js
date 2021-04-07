@@ -25,7 +25,7 @@ let playNote = false;
 let mySnd;
 let soundsArray = [];
 // let sounds = ["e.wav", "g.wav", "c.wav", "b.wav", "note.wav"];
-let sounds = ["HandPuppet_G.wav", "HandPuppet_E.wav", "HandPuppet_C.wav", "note.wav", "Voice03.wav"];
+let sounds = ["sounds_assets/short/HandPuppet_G.wav", "sounds_assets/short/HandPuppet_E.wav", "sounds_assets/short/HandPuppet_C.wav", "sounds_assets/note.wav", "sounds_assets/short/Voice03.wav"];
 let amp;
 
 //preload sounds
@@ -168,7 +168,7 @@ function drawKeypoints() {
   amp = new p5.Amplitude(0.9);
 
   for (let i = 0; i < 5; i++) {
-    soundsArray[i].setVolume(.2);
+    soundsArray[i].setVolume(1);
   }
 
   for (let i = 0; i < predictions.length; i += 1) {
@@ -229,6 +229,7 @@ function drawKeypoints() {
 
     }
     else {
+      soundsArray[3].stop();
       window.globals.p = false;
     }
 
@@ -249,8 +250,7 @@ function drawKeypoints() {
     function positionTracking(finger, heightButton) {
 
       if (
-        finger.x > notesSound[0].x && finger.x < notesSound[1].x &&
-        finger.y > heightButton) {
+        finger.x > notesSound[0].x && finger.x < notesSound[1].x && finger.y > heightButton) {
 
         playNoteSpace = true;
 
@@ -258,7 +258,9 @@ function drawKeypoints() {
           soundsArray[0].play();
           playNote = true;
         }
-        else { playNote = false; }
+        else { 
+          // soundsArray[0].pause();
+          playNote = false; }
       }
 
       else { playNoteSpace = false; }
@@ -273,7 +275,9 @@ function drawKeypoints() {
           soundsArray[1].play();
           playNote = true;
         }
-        else { playNote = false; }
+        else { 
+          // soundsArray[1].pause();
+          playNote = false; }
       }
 
       else { playNoteSpace2 = false; }
@@ -287,7 +291,9 @@ function drawKeypoints() {
           soundsArray[2].play();
           playNote = true;
         }
-        else { playNote = false; }
+        else { 
+          // soundsArray[2].pause();
+          playNote = false; }
       }
 
       else { playNoteSpace3 = false; }
